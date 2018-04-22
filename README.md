@@ -170,8 +170,7 @@ Dropout相对比较简单，但是要注意训练模式和测试模式下的不�
 最难的应该是这部分了。
 首先，第一个难点就是backward梯度的推导。这里我推导了一次。
 
-![2018-04-22-11-43-25](https://note.wiz.cn/wiz-resource/d586d8d5-569a-4972-bb74-dacd287545aa/206bbdf4-0293-4dd7-aa65-e8a5c02ca0f5/index_files/20180422113940458.jpg)
-
+![2018-04-22-14-19-18](http://ovkwd4vse.bkt.clouddn.com/2018-04-22-14-19-18.png)
 
 第二个难点是在fast_layer的时候，会出现col2im_6d_cython isn't defined的问题，这时候需要删除cs231n文件夹下面除im2col_cython.pyx以外所有以im2col_cython开头的文件，然后重新编译。
 
