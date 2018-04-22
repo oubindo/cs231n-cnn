@@ -139,11 +139,49 @@ Softmax也是常见的non-linearity函数。下面是Softmax的定义
 这个涉及到图片的直方图之类的，感觉用处不大，懒得看了
 
 
+## Assignment2: FC-NN, BatchNormalization, Dropout, cnn, Pytorch
+Assignment2相对Assignment1来说知识程度更深了，但是因为有了Assignment1中对梯度和backpropagate的学习，所以相对来说都能触类旁通。唯一比较复杂的就只有卷积层梯度的求解了。所以这部分我先总结一下自己所学到的东西，然后针对题目中的相关问题给出一些讲解。
+
+### 1.Fully-connected Neural Network
+这一部分介绍了几种常见的层的forward/backward，并对这些行为的实现加以封装。
+
+1.Affine Layer仿射层。其实也就是fully-connected layer. Affine Layer其实就是y=wx+b的实现。这一层的backward梯度也比较好求
+
+2.ReLU层。这一层运用了ReLU函数，对于前面传来的小于0的输入都置零，大于0的输入照常输出。引入这种非线性激励函数的作用是避免线性情况下输出永远都是输入的线性组合，从而与没有隐藏层效果相当。在求backward梯度时要注意，只有输出为正数的才有梯度，输出的梯度应该等于dout*x。
 
 
+除了讲解上面的层级，还引入了模块化编程的概念，使用Solver来控制整个训练过程，将模型常用的参数都传给Solver，然后Solver内部进行训练。斯坦福大学学生编程能力真的强。
+
+然后给出了几种更新规则的区别，SGD+momentum，RMSProp，Adam等，这些算法只要知道个原理，都不是很难。
+
+### 2.BatchNormalization
+这一部分难点主要在于  
+1.test模式下BN的操作：由于我们在训练时候已经得到了running_mean和running_var,这两个值将用在test模式下替换原有的sample_mean和sample_var。再带入公式即可。  
+
+2.backward梯度的计算：这里有一篇非常好的文章[Understanding the backward pass through Batch Normalization Layer](https://kratzert.github.io/2016/02/12/understanding-the-gradient-flow-through-the-batch-normalization-layer.html)。简单来说就是当我们没办法一下子看出梯度来时，画出计算图，逐层递推。这和cs231n课程讲到的也是一个意思。最后得到梯度后直接计算，可以比逐层递推有更高的效率。
+
+具体怎么搞就去看代码吧。
 
 
+### 3.Dropout
+Dropout相对比较简单，但是要注意训练模式和测试模式下的不同。测试模式下我们可以使用Dropout，但是测试模式下为了避免随机性不能使用Dropout。为了实现高效率，我们直接对训练时除以p即可。具体的原因请看上面的参考文章：深度学习笔记二。在这里，我们并不是简单的去除以p，而是除以1-p。因为这样可以避免后续的normalize操作。并且这里要把Dropout的mask记住，然后在backward的时候需要。这是和BN一样的原理。
 
+### 4.Convolutional Network
+最难的应该是这部分了。
+首先，第一个难点就是backward梯度的推导。这里我推导了一次。
+
+![2018-04-22-11-43-25](https://note.wiz.cn/wiz-resource/d586d8d5-569a-4972-bb74-dacd287545aa/206bbdf4-0293-4dd7-aa65-e8a5c02ca0f5/index_files/20180422113940458.jpg)
+
+
+第二个难点是在fast_layer的时候，会出现col2im_6d_cython isn't defined的问题，这时候需要删除cs231n文件夹下面除im2col_cython.pyx以外所有以im2col_cython开头的文件，然后重新编译。
+
+第三个难点是在Spatial Batch Normalization处理图片时，这里的输入是(N,C,H,W)，我们需要先转换为(N,H,W,C)再reshape成(N\*H\*W, C)，最后再转换回来，这样才能保留住channel进行Spatial BN操作。
+
+然后我们就可以愉快的组装layer成一个完整的convolutional  network了。
+
+
+### 5.Pytorch和TensorFlow
+这里就没啥好讲的了。
 
 
 
