@@ -183,6 +183,23 @@ Dropout相对比较简单，但是要注意训练模式和测试模式下的不�
 这里就没啥好讲的了。
 
 
+## Assignment3: RNN, Network visualization, style transfer, GAN
+
+### 1.RNN
+RNN是种十分强大的网络，尤其是改进版LSTM，更是让人叹为观止。这个作业写了一个文本标注的例子，只要注意到了rnn的模型架构，一般不会有问题。我放在这里来。
+
+![2018-04-26-23-45-12](http://ovkwd4vse.bkt.clouddn.com/2018-04-26-23-45-12.png)
+
+特别注意LSTM的模型中，$c_t$的梯度来源有两个，dc_t和tanh。所以要把两个相加。
+
+
+### Network visualization
+### Style transfer
+### GAN
+这几个专题感觉都是偏应用型的，代码没什么难度，而且我的代码注释比较详细。直接跟着代码看就行了。
+
+
+
 
 
 
