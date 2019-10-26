@@ -36,13 +36,13 @@ for i in xrange(num_test):
 
 ### 2.SVM
 SVM这里我想介绍一下背景知识。首先介绍一下SVM的loss计算。  
-![2018-04-18-07-32-19](http://ovkwd4vse.bkt.clouddn.com/2018-04-18-07-32-19.png)
+![](https://raw.githubusercontent.com/oubindo/ImageBed/master/img/1.png)
 
 这里的1是margin。SVM使用的是hinge loss。hinge loss图形如下：  
-![2018-04-18-07-37-27](http://ovkwd4vse.bkt.clouddn.com/2018-04-18-07-37-27.png)
+![](https://raw.githubusercontent.com/oubindo/ImageBed/master/img/2.png)
 
 我们之前学习到SVM的代价函数是这个样子  
-![2018-04-18-07-38-14](http://ovkwd4vse.bkt.clouddn.com/2018-04-18-07-38-14.png)
+![](https://raw.githubusercontent.com/oubindo/ImageBed/master/img/3.png)
 
 调转一下约束项的位置，就成了e >= 1 - ywx了。可以看出来SVM损失函数可以看作是L2-norm和Hinge Loss之和。
 
@@ -58,7 +58,7 @@ SVM这里我想介绍一下背景知识。首先介绍一下SVM的loss计算。
 ```
 
 至于gradient，我们需要对这个loss进行w求导：  
-![2018-04-18-07-45-53](http://ovkwd4vse.bkt.clouddn.com/2018-04-18-07-45-53.png)
+![](https://raw.githubusercontent.com/oubindo/ImageBed/master/img/4.png)
 
 注意上面的计算l(*)只有在符合相应条件的时候才进行。  
 ```
@@ -90,7 +90,7 @@ SVM这里我想介绍一下背景知识。首先介绍一下SVM的loss计算。
 
 ### 3.Softmax
 Softmax也是常见的non-linearity函数。下面是Softmax的定义  
-![2018-04-18-07-57-33](http://ovkwd4vse.bkt.clouddn.com/2018-04-18-07-57-33.png)
+![](https://raw.githubusercontent.com/oubindo/ImageBed/master/img/6.png)
 
 单个测试数据的损失就是这样计算，最后求总和要加起来所有的才行。
 
@@ -105,7 +105,7 @@ Softmax也是常见的non-linearity函数。下面是Softmax的定义
 ```
 
 再求gradient。求导很重要的一点就是要分清求导对象  
-![2018-04-18-08-01-49](http://ovkwd4vse.bkt.clouddn.com/2018-04-18-08-01-49.png)
+![](https://raw.githubusercontent.com/oubindo/ImageBed/master/img/7.png)
 
 ```
   dS = softmax_output.copy()
@@ -119,7 +119,7 @@ Softmax也是常见的non-linearity函数。下面是Softmax的定义
 
 下面是残差分布，[这里](http://cs231n.github.io/optimization-2/#mat)对于后向传播的gradient计算做了一些解释。[梯度计算与反向传播](http://python.jobbole.com/89012/)对梯度计算给出了一个很好的实例。
   
-![2018-04-18-08-06-36](http://ovkwd4vse.bkt.clouddn.com/2018-04-18-08-06-36.png)
+![](https://raw.githubusercontent.com/oubindo/ImageBed/master/img/8.png)
 
 ```
     dscores = softmax_output.copy()   # how this come from please see http://cs231n.github.io/neural-networks-case-study/ 
@@ -207,7 +207,7 @@ $ \triangledown a_{12} = \delta_{11}w_{12} + \delta_{12}w_{11} $
 $ \triangledown a_{33} = \delta_{22}w_{22} $
 然后我们进行一下排列组合。
 
-![2018-04-27-12-26-59](http://ovkwd4vse.bkt.clouddn.com/2018-04-27-12-26-59.png)
+![](https://raw.githubusercontent.com/oubindo/ImageBed/master/img/10.png)
 
 第二个难点是在fast_layer的时候，会出现col2im_6d_cython isn't defined的问题，这时候需要删除cs231n文件夹下面除im2col_cython.pyx以外所有以im2col_cython开头的文件，然后重新编译。
 
@@ -225,7 +225,7 @@ $ \triangledown a_{33} = \delta_{22}w_{22} $
 ### 1.RNN
 RNN是种十分强大的网络，尤其是改进版LSTM，更是让人叹为观止。这个作业写了一个文本标注的例子，只要注意到了rnn的模型架构，一般不会有问题。我放在这里来。
 
-![2018-04-26-23-45-12](http://ovkwd4vse.bkt.clouddn.com/2018-04-26-23-45-12.png)
+![](https://raw.githubusercontent.com/oubindo/ImageBed/master/img/11.png)
 
 特别注意LSTM的模型中，$c_t$的梯度来源有两个，dc_t和tanh。所以要把两个相加。
 
